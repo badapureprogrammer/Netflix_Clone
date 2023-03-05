@@ -1,0 +1,55 @@
+/* Normalise css */
+html body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1242px;
+}
+
+/* Header css */
+header {
+  color: aliceblue;
+  background-color: black;
+}
+.header-contain {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+header .logo {
+  max-width: 110px;
+}
+.left-contain,
+.right-contain {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.right-contain p {
+  margin-right: 25px;
+}
+.main-nav {
+  display: inline-flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+.nav-item {
+  opacity: 0.75;
+  color: #e5e5e5;
+  margin-right: 20px;
+}
+.nav-item.active {
+  opacity: 1;
+  color: #fff;
+}
+/* RESPONSIVE CSS */
+@media screen and (max-width: 767px) {
+  .main-nav {
+    display: none;
+  }
+}
