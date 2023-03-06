@@ -4,6 +4,7 @@ const apiEndpoint = "https://api.themoviedb.org/3";
 const imgPath = "https://image.tmdb.org/t/p/original";
 
 const apiPaths = {
+  fetchTrending: `${apiEndpoint}//trending/movie/week?api_key=${apikey}`,
   fetchAllCategories: `${apiEndpoint}/genre/movie/list?api_key=${apikey}`,
   fetchMovieList: (id) =>
     `${apiEndpoint}/discover/movie?api_key=${apikey}&with_genres=${id}`,
@@ -11,7 +12,42 @@ const apiPaths = {
 
 // Boots up the app
 function init() {
+  fetchTrendingMovies();
   fetchAndBuildAllSections();
+}
+
+function fetchTrendingMovies() {
+  fetchAndbuildMovieSection(apiPaths.fetchTrending, "Trending ")
+    .then((res) => {
+      // buildBannerSection(list[0]);
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+}
+
+function buildBannerSection(movie) {
+  const bannerContainer = document.getElementById("banner-section");
+  bannerContainer.style.backgroundImage = `${imgPath}${item.backdrop_path}`;
+
+  const div = document.createElement("div");
+  div.innerHTML = `
+  <h2 class="banner_title">${movie.title}</h2>
+  <p class="banner_info">#4 in TV Shows Today</p>
+  <p class="banner_overview">
+    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis
+  </p>
+  <div class="action-buttons-container">
+    <button type="button" class="action-button">
+      <i class="fa fa-play"></i> Play
+    </button>
+    <button type="button" class="action-button">
+      <i class="fa fa-circle-info"></i> More Info
+    </button>
+  </div>`;
+  div.className = "banner-content container";
+  bannerContainer.append(div);
 }
 
 function fetchAndBuildAllSections() {
@@ -23,7 +59,7 @@ function fetchAndBuildAllSections() {
         categories.slice(0, 3).forEach((category) => {
           fetchAndbuildMovieSection(
             apiPaths.fetchMovieList(category.id),
-            category
+            category.name
           );
         });
       }
@@ -32,23 +68,20 @@ function fetchAndBuildAllSections() {
     .catch((error) => console.log(error));
 }
 
-function fetchAndbuildMovieSection(fetchUrl, category) {
-  fetch(fetchUrl)
+function fetchAndbuildMovieSection(fetchUrl, categoryName) {
+  return fetch(fetchUrl)
     .then((res) => res.json())
     .then((res) => {
-      // console.table(res.results);
       const movies = res.results;
       if (Array.isArray(movies) && movies.length) {
-        buildMovieSection(movies, category.name);
+        buildMovieSection(movies, categoryName);
       }
+      return movies;
     })
     .catch((error) => console.log(error));
 }
 
 function buildMovieSection(list, categoryName) {
-  // console.log(list, categoryName);
-  console.log(list);
-
   const moviesContain = document.getElementById("movie-contain");
 
   const movieListImage = list
