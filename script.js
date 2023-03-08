@@ -17,10 +17,10 @@ function init() {
 }
 
 function fetchTrendingMovies() {
-  fetchAndbuildMovieSection(apiPaths.fetchTrending, "Trending ")
-    .then((res) => {
-      // buildBannerSection(list[0]);
-      console.log(res);
+  fetchAndbuildMovieSection(apiPaths.fetchTrending, "Trending Now")
+    .then((list) => {
+      const randonIndex = parseInt(Math.random() * list.length);
+      buildBannerSection(list[randonIndex]);
     })
     .catch((error) => {
       console.log(error);
@@ -29,23 +29,22 @@ function fetchTrendingMovies() {
 
 function buildBannerSection(movie) {
   const bannerContainer = document.getElementById("banner-section");
-  bannerContainer.style.backgroundImage = `${imgPath}${item.backdrop_path}`;
+  bannerContainer.style.backgroundImage = `url(${imgPath}${movie.backdrop_path})`;
 
   const div = document.createElement("div");
   div.innerHTML = `
   <h2 class="banner_title">${movie.title}</h2>
-  <p class="banner_info">#4 in TV Shows Today</p>
-  <p class="banner_overview">
-    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Blanditiis
-  </p>
+  <p class="banner_info">${movie.release_date}</p>
+  <p class="banner_overview">${
+    movie.overview && movie.overview.length > 20
+      ? movie.overview.slice(0, 200).trim() + "..."
+      : movie.overview
+  }</p>
   <div class="action-buttons-container">
-    <button type="button" class="action-button">
-      <i class="fa fa-play"></i> Play
-    </button>
-    <button type="button" class="action-button">
-      <i class="fa fa-circle-info"></i> More Info
-    </button>
+      <button type="button" class="action-button"><i class="fa fa-play"></i> Play</button>
+      <button type="button" class="action-button"><i class="fa fa-circle-info"></i> More Info</button>
   </div>`;
+
   div.className = "banner-content container";
   bannerContainer.append(div);
 }
@@ -56,7 +55,7 @@ function fetchAndBuildAllSections() {
     .then((res) => {
       const categories = res.genres;
       if (Array.isArray(categories) && categories.length) {
-        categories.slice(0, 3).forEach((category) => {
+        categories.forEach((category) => {
           fetchAndbuildMovieSection(
             apiPaths.fetchMovieList(category.id),
             category.name
@@ -76,6 +75,7 @@ function fetchAndbuildMovieSection(fetchUrl, categoryName) {
       if (Array.isArray(movies) && movies.length) {
         buildMovieSection(movies, categoryName);
       }
+      console.log(movies);
       return movies;
     })
     .catch((error) => console.log(error));
@@ -106,4 +106,11 @@ function buildMovieSection(list, categoryName) {
 
 window.addEventListener("load", function () {
   init();
+
+  window.addEventListener("scroll", function () {
+    // header ui update
+    const header = document.getElementById("header");
+    if (window.scrollY > 10) header.classList.add("black-bg");
+    else header.classList.remove("black-bg");
+  });
 });

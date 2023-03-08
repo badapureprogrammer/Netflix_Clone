@@ -19,8 +19,15 @@ html body {
 
 /* Header css */
 header {
+  top: 0;
+  left: 0;
+  width: 100%;
+  position: fixed;
   color: #f0f8ff;
-  background-color: #000;
+  /* transition: background-color ease 0.5s; */
+}
+.black-bg {
+  background-color: #1e1e1e;
 }
 .header-contain {
   display: flex;
@@ -81,18 +88,21 @@ header .logo {
 .banner-section {
   display: flex;
   min-height: 98vh;
+  padding-top: 80px;
   background-size: cover;
-  flex-direction: column;
   background-repeat: no-repeat;
 }
 .banner-content {
-  padding-top: 170px;
+  display: flex;
+  padding-top: 70px;
+  flex-direction: column;
 }
 .banner_title {
+  margin: 0px;
   color: #fff;
-  font-size: 7.5em;
-  line-height: 1.2em;
-  margin: 0px 0px 10px 0px;
+  max-width: 45%;
+  font-size: 7em;
+  line-height: 0.9em;
   word-spacing: 0.02em;
   letter-spacing: 0.03em;
 }
@@ -104,6 +114,8 @@ header .logo {
 .banner_overview {
   color: #fff;
   font-size: 2em;
+  max-width: 50%;
+  margin-left: 0;
   margin-bottom: 14px;
 }
 .action-buttons-container {
@@ -182,5 +194,13 @@ header .logo {
 @media screen and (max-width: 767px) {
   .main-nav {
     display: none;
+  }
+  .banner-section {
+    background-position: center;
+  }
+  .banner_overview,
+  .banner_title {
+    max-width: 100%;
+    flex-direction: column;
   }
 }
