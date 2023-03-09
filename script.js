@@ -8,11 +8,14 @@ const apiPaths = {
   fetchAllCategories: `${apiEndpoint}/genre/movie/list?api_key=${apikey}`,
   fetchMovieList: (id) =>
     `${apiEndpoint}/discover/movie?api_key=${apikey}&with_genres=${id}`,
+  searchOnYoutube: (query) =>
+    `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${query}&key=AIzaSyCl5fteqZhgeZjMSG0eAEsjZmfh83Exv7k`,
 };
 
 // Boots up the app
 function init() {
   fetchTrendingMovies();
+  searchMovieTrailer();
   fetchAndBuildAllSections();
 }
 
@@ -75,7 +78,6 @@ function fetchAndbuildMovieSection(fetchUrl, categoryName) {
       if (Array.isArray(movies) && movies.length) {
         buildMovieSection(movies, categoryName);
       }
-      console.log(movies);
       return movies;
     })
     .catch((error) => console.log(error));
@@ -87,7 +89,10 @@ function buildMovieSection(list, categoryName) {
   const movieListImage = list
     .map((item) => {
       return `
-    <img class="movie-item" src="${imgPath}${item.backdrop_path}" alt="${item.title}"/>`;
+      <div class="movie-item">
+          <img class="movie-item-image" src="${imgPath}${item.backdrop_path}" alt="${item.title}" onclick="searchMovieTrailer('${item.title}')"/>
+          <iframe width="240px" src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1"></iframe>
+      </div>`;
     })
     .join();
 
@@ -102,6 +107,22 @@ function buildMovieSection(list, categoryName) {
 
   // append HTML into movies Container
   moviesContain.append(div);
+}
+
+function searchMovieTrailer(movieName) {
+  // if (!movieName) return;
+
+  fetch(apiPaths.searchOnYoutube(movieName))
+    .then((res) => res.json())
+    .then((res) => {
+      const result = res.items[0];
+      const youtubeUrl = `https://www.youtube.com/watch?v=${result.id.videoId}`;
+      console.log(youtubeUrl);
+      window.open(youtubeUrl, "_blank");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 window.addEventListener("load", function () {

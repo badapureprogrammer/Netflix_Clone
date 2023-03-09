@@ -21,13 +21,15 @@ html body {
 header {
   top: 0;
   left: 0;
+  z-index: 99;
   width: 100%;
   position: fixed;
   color: #f0f8ff;
   /* transition: background-color ease 0.5s; */
 }
 .black-bg {
-  background-color: #1e1e1e;
+  transition: all ease 300ms;
+  background-color: #1f1f1f;
 }
 .header-contain {
   display: flex;
@@ -146,7 +148,7 @@ header .logo {
 
 /* Movie Section CSS */
 .movie-section {
-  margin: 30px auto 50px;
+  margin: 40px 0px;
 }
 .movie-section-heading {
   color: #fff;
@@ -171,21 +173,37 @@ header .logo {
 }
 .movie-image-container {
   display: flex;
-  min-height: 160px;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: nowrap;
   overflow-x: auto;
+  min-height: 160px;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex-direction: row;
 }
 .movie-item {
+  cursor: pointer;
+  margin-right:15px;
+  position: relative;
+}
+.movie-item iframe {
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: none;
+  position: absolute;
+}
+.movie-item:hover iframe {
+  display: block;
+}
+.movie-item-image {
   width: 246px;
-  margin-right: 10px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 4px;
   transition: all 0.4s ease;
   border: 2px solid transparent;
 }
-.movie-item:hover {
+.movie-item-image:hover {
   transform: scale(1.1);
   border: 2px solid #5e5959;
 }
