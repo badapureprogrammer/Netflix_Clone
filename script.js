@@ -2,6 +2,7 @@
 const apikey = "fa4a4b1c7cb9bbcd52b95287199855df";
 const apiEndpoint = "https://api.themoviedb.org/3";
 const imgPath = "https://image.tmdb.org/t/p/original";
+const searchOnYoutubeKey = "AIzaSyCl5fteqZhgeZjMSG0eAEsjZmfh83Exv7k";
 
 const apiPaths = {
   fetchTrending: `${apiEndpoint}//trending/movie/week?api_key=${apikey}`,
@@ -91,7 +92,7 @@ function buildMovieSection(list, categoryName) {
       return `
       <div class="movie-item">
           <img class="movie-item-image" src="${imgPath}${item.backdrop_path}" alt="${item.title}" onclick="searchMovieTrailer('${item.title}')"/>
-          <iframe width="240px" src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1"></iframe>
+          <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1"></iframe>
       </div>`;
     })
     .join();
@@ -110,7 +111,7 @@ function buildMovieSection(list, categoryName) {
 }
 
 function searchMovieTrailer(movieName) {
-  // if (!movieName) return;
+  if (!movieName) return;
 
   fetch(apiPaths.searchOnYoutube(movieName))
     .then((res) => res.json())
